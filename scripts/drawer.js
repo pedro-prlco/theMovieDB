@@ -1,23 +1,23 @@
-const catholder = "<ul class='movies_list' id='ms_'><li class='movies'><h2 class='category_title'></h2><ul class='movies_display_ul'></ul></li></ul>";
-const movieBtn = "<div class='card' style='width: 18rem; border: none;'><img src='https://flxt.tmsimg.com/assets/p7825626_p_v10_af.jpg' class='card-img-top' alt='...'><div class='card-body' style='position: absolute; top: 63%; background-color: rgba(0, 0, 0, .5); width: 18rem;'><h5>Inception</h5><button class='btn btn-primary' style='background-color: red; border: none; z-index:99;'>Mais</button></div></div>";
+const catholder = "<li class='movies' id='ms_'><h2 class='category_title'></h2><ul class='movies_display_ul'></ul></li>";
+const movieBtn = "<button class='card' style='width: 18rem; border: none;'><img src='https://flxt.tmsimg.com/assets/p7825626_p_v10_af.jpg' class='card-img-top' alt='...'></button>";
 const posterOriginalBase = "https://image.tmdb.org/t/p/original";
 
 $(document).ready(function () {
 
-    addMovieSession(".container-fluid", "No Cinema", () => {
+    addMovieSession(".movies_list", "No Cinema", () => {
         moviedb_get("now_playing", (response) => {
 
             data = JSON.parse(response);
             drawFetchedData(data, "No Cinema");
 
-            addMovieSession(".container-fluid", "Em alta", () => {
+            addMovieSession(".movies_list", "Em alta", () => {
 
                 moviedb_get("popular", (response) => {
 
                     data = JSON.parse(response);
                     drawFetchedData(data, "Em alta");
 
-                    addMovieSession(".container-fluid", "Top rated", () => {
+                    addMovieSession(".movies_list", "Top rated", () => {
                         moviedb_get("top_rated", (response) => {
 
                             data = JSON.parse(response);
