@@ -193,6 +193,12 @@ header .principal-nav
 
 }
 
+.btn:hover
+{
+    /* z-index: 99; */
+    /* cursor: pointer; */
+}
+
 .movies .movies_display_ul li
 {
     padding: 5px;
