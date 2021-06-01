@@ -12,47 +12,7 @@ var access_token;
 $(document).ready(function () {
 
     if (initApi()) {
-
-
-        $("#populars").bind("click", function () {
-
-            let link = "".concat(BASE_URL, POPULAR, KEY);
-            console.log(link);
-            let request = new XMLHttpRequest();
-            request.open("GET", link);
-            request.send();
-
-            request.onreadystatechange = function () {
-                wDataResponse(request.responseText);
-            };
-        });
-
-        $("#latest").bind("click", function () {
-
-            let link = "".concat(BASE_URL, LATEST, KEY);
-            console.log(link);
-            let request = new XMLHttpRequest();
-            request.open("GET", link);
-            request.send();
-
-            request.onreadystatechange = function () {
-                wDataResponse(request.responseText);
-            };
-        });
-
-
-        $("#now_playing").bind("click", function () {
-
-            let link = "".concat(BASE_URL, NOW_PLAYING, KEY);
-            console.log(link);
-            let request = new XMLHttpRequest();
-            request.open("GET", link);
-            request.send();
-
-            request.onreadystatechange = function () {
-                wDataResponse(request.responseText);
-            };
-        });
+        console.log("App initialized !");
     }
 });
 
@@ -88,6 +48,20 @@ function hasToken() {
     access_token = localStorage.getItem("access_token");
 
     return true;
+}
+
+function moviedb_get(type) {
+    let link = "".concat(BASE_URL, "movie/", type, "?api_key=", KEY);
+    console.log(link);
+    let request = new XMLHttpRequest();
+    request.open("GET", link);
+    request.send();
+
+    request.onreadystatechange = function () {
+        return JSON.parse(request.responseText);
+    };
+
+    return null;
 }
 
 function wFeedback(value) {
