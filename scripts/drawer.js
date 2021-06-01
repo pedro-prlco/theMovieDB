@@ -59,7 +59,7 @@ function addMovieBtn(parent, movie) {
 function openMovie(movieId) {
     moviedb_get(movieId, (response) => {
         localStorage.setItem("inspectedMovie", response);
-        location.href = "app.html";
+        location.href = "movie.html";
     });
 }
 
