@@ -7,8 +7,6 @@ const NOW_PLAYING = "movie/now_playing?api_key=";
 
 var access_token;
 
-// https://api.themoviedb.org/3//authentication/token/new?api_key=aa1ab57aa675e652c1de3d6e5d3c5b04
-
 $(document).ready(function () {
 
     if (initApi()) {
@@ -23,6 +21,7 @@ function initApi() {
 
     if (!hasToken()) {
 
+        console.log("Getting new token");
         request.open("GET", link);
         request.send();
 
@@ -50,18 +49,20 @@ function hasToken() {
     return true;
 }
 
-function moviedb_get(type) {
+function moviedb_get(type, callback) {
+
     let link = "".concat(BASE_URL, "movie/", type, "?api_key=", KEY);
-    console.log(link);
     let request = new XMLHttpRequest();
+
+    console.log("GET: ".concat(link));
+
     request.open("GET", link);
     request.send();
 
     request.onreadystatechange = function () {
-        return JSON.parse(request.responseText);
+        if (request.readyState == 4 && request.status == 200)
+            callback(request.responseText);
     };
-
-    return null;
 }
 
 function wFeedback(value) {
