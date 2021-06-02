@@ -51,6 +51,22 @@ function moviedb_gettv(type, callback) {
     };
 }
 
+function moviedb_search(type, query, callback) {
+
+    let link = "".concat(BASE_URL, "search/", type, "?api_key=", KEY, "&query=", query);
+    let request = new XMLHttpRequest();
+
+    console.log("GET: ".concat(link));
+
+    request.open("GET", link);
+    request.send();
+
+    request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200)
+            callback(request.responseText);
+    };
+}
+
 function wFeedback(value) {
     $("#feedback").html(value);
 }

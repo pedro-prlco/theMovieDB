@@ -277,6 +277,13 @@ header .principal-nav
     margin-bottom: 200px;
 }
 
+.search_results
+{
+    color: white;
+    margin-top: 50px;
+    font-family: 'Segoe UI Light', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 footer
 {
     background-color: #000;

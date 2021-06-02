@@ -25,6 +25,19 @@
 
             const genreLi = "<li>GENRE_HERE</li>";
 
+            $(".search").keydown(function (event) {
+
+                if (event.keyCode == 13) {
+
+                    console.log("sarching for " + $(".search").val());
+
+                    moviedb_search("movie", $(".search").val(), (response) => {
+                        localStorage.setItem("search", response);
+                        location.href = "search.html";
+                    });
+                }
+            });
+
             var movie = JSON.parse(localStorage.getItem("inspectedMovie"));
             var credits = null;
 
@@ -42,7 +55,12 @@
             }
             else {
                 moviedb_gettv(movie.id.toString().concat("/credits"), (response) => {
-                    credits = response;
+                    credits = JSON.parse(response);
+                    for (i = 0; i < 5; i++) {
+                        console.log(credits.cast[i].name);
+                        var old = $("#tags").html();
+                        $("#tags").html(old + " " + genreLi.replace("GENRE_HERE", credits.cast[i].name));
+                    }
                 });
             }
 
@@ -99,7 +117,7 @@
 
     <header>
         <img src="img/logo159x80.png" , width="">
-        <input id="center-h" type="text" placeholder="Procurar por título, ator ou diretor">
+        <input id="center-h" class="search" type="text" placeholder="Procurar por título, ator ou diretor">
     </header>
     <section class="main">
         <div class="movie_info">

@@ -2,6 +2,7 @@ const catholder = "<li class='movies' id='ms_'><h2 class='category_title'></h2><
 const movieBtn = "<button class='card' style='width: 18rem; border: none;'><img src='https://flxt.tmsimg.com/assets/p7825626_p_v10_af.jpg' class='card-img-top' alt='...'></button>";
 const posterOriginalBase = "https://image.tmdb.org/t/p/original";
 
+//caso estou desenhando seção de filme ou série
 function drawFetchedData(data, session, productionType) {
 
     console.log(data);
@@ -11,6 +12,18 @@ function drawFetchedData(data, session, productionType) {
     for (i = 0; i < size; i++) {
         if (i < data.results.length)
             addMovieBtn(getIdFromSessionName(session), data.results[i].id, data.results[i].original_title, data.results[i].poster_path, productionType);
+    }
+}
+
+//caso estou desenhando resultados de pesquisa
+function drawFetchedData(data, session) {
+
+    console.log(data);
+
+    for (i = 0; i < data.results.length; i++) {
+        if (data.results[i].backdrop_path != null) {
+            addMovieBtn(getIdFromSessionName(session), data.results[i].id, data.results[i].original_title, data.results[i].poster_path, "movie");
+        }
     }
 }
 

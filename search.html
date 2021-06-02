@@ -19,8 +19,7 @@
 <body>
 
     <script>
-        $(document).ready(function () {
-
+        $(document).ready(() => {
             $(".search").keydown(function (event) {
 
                 if (event.keyCode == 13) {
@@ -32,40 +31,15 @@
                         location.href = "search.html";
                     });
                 }
+
             });
 
-            addMovieSession(".movies_list", "No Cinema", () => {
-                moviedb_getmovie("now_playing", (response) => {
-
-                    data = JSON.parse(response);
-                    drawFetchedData(data, "No Cinema", "movie");
-
-                    addMovieSession(".movies_list", "Em alta", () => {
-
-                        moviedb_getmovie("popular", (response) => {
-
-                            data = JSON.parse(response);
-                            drawFetchedData(data, "Em alta", "movie");
-
-                            addMovieSession(".movies_list", "Top rated", () => {
-                                moviedb_getmovie("top_rated", (response) => {
-
-                                    data = JSON.parse(response);
-                                    drawFetchedData(data, "Top rated", "movie");
-
-                                    addMovieSession(".movies_list", "Séries populares", () => {
-                                        moviedb_gettv("popular", (response) => {
-
-                                            data = JSON.parse(response);
-                                            drawFetchedData(data, "Séries populares", "tv");
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
+            if (localStorage.getItem("search")) {
+                data = JSON.parse(localStorage.getItem("search"));
+                addMovieSession(".search_results", "Resultados", () => {
+                    drawFetchedData(data, "Resultados");
                 });
-            });
+            }
         });
     </script>
 
@@ -73,8 +47,8 @@
         <img src="img/logo159x80.png" , width="">
         <input id="center-h" class="search" type="text" placeholder="Procurar por título, ator ou diretor">
     </header>
-    <section class="container-fluid">
-        <ul class="movies_list"></ul>
+    <section class="search_results">
+
     </section>
     <footer>
         <img src="img/logo159x80.png"></h2>
