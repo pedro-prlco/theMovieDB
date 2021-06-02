@@ -37,7 +37,7 @@
             if (localStorage.getItem("search")) {
                 data = JSON.parse(localStorage.getItem("search"));
                 addMovieSession(".search_results", "Resultados", () => {
-                    drawFetchedData(data, "Resultados");
+                    drawFetchedDataWOutSession(data, "Resultados");
                 });
             }
         });

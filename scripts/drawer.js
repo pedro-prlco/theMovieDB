@@ -10,13 +10,12 @@ function drawFetchedData(data, session, productionType) {
     var size = (data.results.length > 4) ? 4 : data.results.length;
 
     for (i = 0; i < size; i++) {
-        if (i < data.results.length)
-            addMovieBtn(getIdFromSessionName(session), data.results[i].id, data.results[i].original_title, data.results[i].poster_path, productionType);
+        addMovieBtn(getIdFromSessionName(session), data.results[i].id, data.results[i].original_title, data.results[i].poster_path, productionType);
     }
 }
 
 //caso estou desenhando resultados de pesquisa
-function drawFetchedData(data, session) {
+function drawFetchedDataWOutSession(data, session) {
 
     console.log(data);
 
