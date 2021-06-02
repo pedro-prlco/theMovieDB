@@ -17,6 +17,45 @@
 </head>
 
 <body>
+
+    <script>
+        $(document).ready(function () {
+
+            addMovieSession(".movies_list", "No Cinema", () => {
+                moviedb_getmovie("now_playing", (response) => {
+
+                    data = JSON.parse(response);
+                    drawFetchedData(data, "No Cinema", "movie");
+
+                    addMovieSession(".movies_list", "Em alta", () => {
+
+                        moviedb_getmovie("popular", (response) => {
+
+                            data = JSON.parse(response);
+                            drawFetchedData(data, "Em alta", "movie");
+
+                            addMovieSession(".movies_list", "Top rated", () => {
+                                moviedb_getmovie("top_rated", (response) => {
+
+                                    data = JSON.parse(response);
+                                    drawFetchedData(data, "Top rated", "movie");
+
+                                    addMovieSession(".movies_list", "Séries populares", () => {
+                                        moviedb_gettv("popular", (response) => {
+
+                                            data = JSON.parse(response);
+                                            drawFetchedData(data, "Séries populares", "tv");
+                                        });
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    </script>
+
     <header>
         <img src="img/logo159x80.png" , width="">
         <input id="center-h" type="text" placeholder="Procurar por título, ator ou diretor">

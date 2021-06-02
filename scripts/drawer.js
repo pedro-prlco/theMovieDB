@@ -2,41 +2,15 @@ const catholder = "<li class='movies' id='ms_'><h2 class='category_title'></h2><
 const movieBtn = "<button class='card' style='width: 18rem; border: none;'><img src='https://flxt.tmsimg.com/assets/p7825626_p_v10_af.jpg' class='card-img-top' alt='...'></button>";
 const posterOriginalBase = "https://image.tmdb.org/t/p/original";
 
-$(document).ready(function () {
+function drawFetchedData(data, session, productionType) {
 
-    addMovieSession(".movies_list", "No Cinema", () => {
-        moviedb_get("now_playing", (response) => {
-
-            data = JSON.parse(response);
-            drawFetchedData(data, "No Cinema");
-
-            addMovieSession(".movies_list", "Em alta", () => {
-
-                moviedb_get("popular", (response) => {
-
-                    data = JSON.parse(response);
-                    drawFetchedData(data, "Em alta");
-
-                    addMovieSession(".movies_list", "Top rated", () => {
-                        moviedb_get("top_rated", (response) => {
-
-                            data = JSON.parse(response);
-                            drawFetchedData(data, "Top rated");
-                        });
-                    });
-                });
-            });
-        });
-    });
-});
-
-
-function drawFetchedData(data, session) {
     console.log(data);
 
-    for (i = 0; i < 4; i++) {
+    var size = (data.results.length > 4) ? 4 : data.results.length;
+
+    for (i = 0; i < size; i++) {
         if (i < data.results.length)
-            addMovieBtn(getIdFromSessionName(session), data.results[i])
+            addMovieBtn(getIdFromSessionName(session), data.results[i].id, data.results[i].original_title, data.results[i].poster_path, productionType);
     }
 }
 
@@ -48,19 +22,35 @@ function addMovieSession(parent, name, whendone) {
     whendone();
 }
 
-function addMovieBtn(parent, movie) {
+function addMovieBtn(parent, id, original_title, poster_path, productionType) {
     var old = $("#" + parent + " .movies_display_ul").html();
-    $("#" + parent + " .movies_display_ul").html(old + " <li id=" + movie.id + ">" + movieBtn + "</li>");
-    $("#" + parent + " .movies_display_ul #" + movie.id + " h5").html(movie.original_title);
-    $("#" + parent + " .movies_display_ul #" + movie.id + " img").attr("src", posterOriginalBase.concat(movie.poster_path));
-    $("#" + parent + " .movies_display_ul #" + movie.id + " button").attr("onclick", "openMovie(".concat(movie.id, ")"));
+    $("#" + parent + " .movies_display_ul").html(old + " <li id=" + id + ">" + movieBtn + "</li>");
+    $("#" + parent + " .movies_display_ul #" + id + " h5").html(original_title);
+    $("#" + parent + " .movies_display_ul #" + id + " img").attr("src", posterOriginalBase.concat(poster_path));
+    $("#" + parent + " .movies_display_ul #" + id + " button").attr("onclick", "openMovie(".concat("\'", id, "_", productionType, "\')"));
 }
 
 function openMovie(movieId) {
-    moviedb_get(movieId, (response) => {
-        localStorage.setItem("inspectedMovie", response);
-        location.href = "movie.html";
-    });
+
+    var id = movieId.split("_")[0];
+    var type = movieId.split("_")[1];
+
+    console.log("Open".concat(type, " ", id));
+
+    if (type == "movie") {
+        moviedb_getmovie(id, (response) => {
+            localStorage.setItem("productionType", "movie");
+            localStorage.setItem("inspectedMovie", response);
+            location.href = "movie.html";
+        });
+    }
+    else {
+        moviedb_gettv(id, (response) => {
+            localStorage.setItem("productionType", "tv");
+            localStorage.setItem("inspectedMovie", response);
+            location.href = "movie.html";
+        });
+    }
 }
 
 function getIdFromSessionName(session) {

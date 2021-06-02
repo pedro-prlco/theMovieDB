@@ -239,9 +239,10 @@ header .principal-nav
 {
     list-style: none;
     width: 80%;
+    margin-bottom: 100px;
 }
 
-.movie_info ul li
+.movie_info .info_labels li
 {
     display: inline-block;
     background-color: #3b3b3b;
@@ -257,6 +258,18 @@ header .principal-nav
     object-fit: contain;
     width: 100%;
     height: 100%;
+}
+
+.relacionados
+{
+    display: block;
+    margin: 0px auto;
+    width: 90%;
+}
+
+.relacionados .category_title
+{
+    color: white;
 }
 
 .main

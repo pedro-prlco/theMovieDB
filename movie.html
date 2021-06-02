@@ -11,12 +11,92 @@
     <link rel="stylesheet" href="styles/main_style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="scripts/app.js"></script>
-    <script src="scripts/drawer_movie.js"></script>
+    <script src="scripts/drawer.js"></script>
 
     <title>Pucflix - Assista filmes e séries</title>
 </head>
 
 <body>
+
+    <script>
+        $(document).ready(() => {
+
+            const posterOriginalBase = "https://image.tmdb.org/t/p/w500";
+
+            const genreLi = "<li>GENRE_HERE</li>";
+
+            var movie = JSON.parse(localStorage.getItem("inspectedMovie"));
+            var credits = null;
+
+            if (localStorage.getItem("productionType") == "movie") {
+
+                moviedb_getmovie(movie.id.toString().concat("/credits"), (response) => {
+                    credits = JSON.parse(response);
+                    for (i = 0; i < 5; i++) {
+                        console.log(credits.cast[i].name);
+                        var old = $("#tags").html();
+                        $("#tags").html(old + " " + genreLi.replace("GENRE_HERE", credits.cast[i].name));
+                    }
+
+                });
+            }
+            else {
+                moviedb_gettv(movie.id.toString().concat("/credits"), (response) => {
+                    credits = response;
+                });
+            }
+
+
+            console.log("Inspected data");
+            console.log(movie);
+
+            $("#movie_info_poster").attr("src", posterOriginalBase.concat(movie.poster_path));
+
+            if (localStorage.getItem("productionType") == "movie") {
+                $(".movie_info h2").text(movie.original_title.concat(" ★ ", movie.vote_average));
+            }
+            else {
+                $(".movie_info h2").text(movie.original_name.concat(" ★ ", movie.vote_average));
+            }
+
+            $(".movie_info p").text(movie.overview);
+
+            movie.production_companies.forEach(element => {
+                var old = $("#tags").html();
+                $("#tags").html(old + " " + genreLi.replace("GENRE_HERE", element.name));
+            });
+
+            movie.genres.forEach(element => {
+                var old = $("#tags").html();
+                $("#tags").html(old + " " + genreLi.replace("GENRE_HERE", element.name));
+            });
+
+            movie.spoken_languages.forEach(element => {
+                var old = $("#tags").html();
+                $("#tags").html(old + " " + genreLi.replace("GENRE_HERE", element.english_name));
+            });
+
+            addMovieSession(".relacionados", "Relacionados", () => {
+
+                console.log(movie.id.toString().concat("/similar"));
+
+                if (localStorage.getItem("productionType") == "movie") {
+                    moviedb_getmovie(movie.id.toString().concat("/similar"), (response) => {
+                        data = JSON.parse(response);
+                        drawFetchedData(data, "Relacionados", "movie");
+                    });
+                }
+                else {
+                    moviedb_gettv(movie.id.toString().concat("/similar"), (response) => {
+                        data = JSON.parse(response);
+                        drawFetchedData(data, "Relacionados", "tv");
+                    });
+                }
+            });
+
+        });
+    </script>
+
     <header>
         <img src="img/logo159x80.png" , width="">
         <input id="center-h" type="text" placeholder="Procurar por título, ator ou diretor">
@@ -29,10 +109,11 @@
             <div style="display: block; width: 80%; margin: 0px auto; padding-top: 10px;">
                 <h2>Name goes here !</h2>
                 <p>Description goes here !</p>
-                <ul>
-
+                <ul class="info_labels" id="tags">
                 </ul>
             </div>
+        </div>
+        <div class="relacionados">
         </div>
     </section>
     <footer>
